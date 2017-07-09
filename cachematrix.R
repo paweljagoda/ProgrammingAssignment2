@@ -4,15 +4,15 @@
 #accessed using the $ sign and changed when necessary. getinverse returns NULL unless cacheSolve function was run.
 
 makeCacheMatrix <- function(x = matrix()){
-        m <- NULL
-        set <- function(y) { #defining the setter function which sets initial values of variables x and m
+        inv <- NULL
+        set <- function(y) { #defining the setter function which sets initial values of variables x and inv
                 x <<- y 
-                m <<- NULL #clears any previous values of m
+                inv <<- NULL #clears any previous values of inv
         }
         get <- function() x #defining the getter function
-        setinverse <- function(solve) m <<- solve #applying solve() to m to get the inverse of the matrix
+        setinverse <- function(solve) inv <<- solve #applying solve() to m to get the inverse of the matrix
                                                   #and saving its value to parent directory.
-        getinverse <- function() m                
+        getinverse <- function() inv                
         list(set = set, get = get,    #saving and naming the functions in a list
              setinverse = setinverse,
              getinverse = getinverse)
@@ -22,13 +22,13 @@ makeCacheMatrix <- function(x = matrix()){
 #as argument x and returns it if available; if not, then it returns a newly calculated value of the inverse.
 
 cacheSolve <- function(x, ...){
-        m <- x$getinverse() #trying to retrieve a previous value of the inverse  
-        if(!is.null(m)) { #if m is not NULL, a cached value for the inverse can be returned
+        inv <- x$getinverse() #trying to retrieve a previous value of the inverse  
+        if(!is.null(inv)) { #if inv is not NULL, a cached value for the inverse can be returned
                 message("getting cached data")
-                return(m) 
+                return(inv) 
         }
         data <- x$get()
-        m <- solve(data, ...) #if m is NULL, the function calculates the inverse
-        x$setinverse(m)
-        m
+        inv <- solve(data, ...) #if inv is NULL, the function calculates the inverse
+        x$setinverse(inv)
+        inv
 }
